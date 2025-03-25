@@ -19,8 +19,22 @@ bool Pawn::validMove(Square &space, Chessboard &board)
         setFile(space.file);
         setRank(space.rank);
         setSpace(space);
-        space.occupant = this;
         space.occupied = true;
+
+        // promotion check
+        if ((this->getTeam() == "white" && space.rank == 7) || (this->getTeam() == "black" && space.rank == 0))
+        {
+            std::string team = this->getTeam();
+            int file = space.file;
+            int rank = space.rank;
+            delete this;
+            space.occupant = new Queen("queen", team, file, rank, &space);
+        }
+        else
+        {
+            space.occupant = this;
+        }
+
         return true;
     }
 
@@ -53,8 +67,22 @@ bool Pawn::validMove(Square &space, Chessboard &board)
         setFile(space.file);
         setRank(space.rank);
         setSpace(space);
-        space.occupant = this;
         space.occupied = true;
+
+        // promotion check
+        if ((this->getTeam() == "white" && space.rank == 7) || (this->getTeam() == "black" && space.rank == 0))
+        {
+            std::string team = this->getTeam();
+            int file = space.file;
+            int rank = space.rank;
+            delete this;
+            space.occupant = new Queen("queen", team, file, rank, &space);
+        }
+        else
+        {
+            space.occupant = this;
+        }
+
         return true;
     }
 
@@ -103,12 +131,12 @@ bool Queen::validMove(Square &space, Chessboard &board)
     int rank_step = (rank_diff == 0) ? 0 : (rank_diff > 0 ? 1 : -1);
 
     int steps = std::max(std::abs(file_diff), std::abs(rank_diff));
-    
+
     for (int i = 1; i < steps; ++i)
     {
         int f = this->getFile() + i * file_step;
         int r = this->getRank() + i * rank_step;
-        
+
         if (board.getSquare(f, r).occupied)
             return false;
     }
