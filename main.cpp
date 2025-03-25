@@ -128,10 +128,7 @@ int main()
                             {
                                 winner_message = selected_piece->getTeam() + " wins!";
                             }
-                        }
 
-                        if (winner_message.empty())
-                        {
                             current_turn = (current_turn == "white") ? "black" : "white";
                         }
 
@@ -202,7 +199,11 @@ int main()
 
             int texW = 0, texH = 0;
             SDL_QueryTexture(text_texture, NULL, NULL, &texW, &texH);
-            SDL_Rect dst_rect = {(window_width - texW) / 2, (window_height - texH) / 2, texW, texH};
+            SDL_Rect dst_rect = {
+                board_pixel_size + (hud_width - texW) / 2,
+                120,
+                texW,
+                texH};
             SDL_RenderCopy(renderer, text_texture, NULL, &dst_rect);
 
             SDL_FreeSurface(text_surface);
